@@ -1,34 +1,60 @@
-/*
-  This is your site JavaScript code - you can add interactivity!
-*/
+const button = document.querySelector("#btn");
+const inputField = document.querySelector("#guess");
+const answer = Math.floor(Math.random()*20);
 
-// Print a message in the browser's dev tools console each time the page loads
-// Use your menus or right-click / control-click and choose "Inspect" > "Console"
-console.log("Hello 🌎");
+inputField.addEventListener("keypress", function(e){
+    if (e.keyCode === 13) {
+        play();
+    }
+} )
 
-/* 
-Make the "Click me!" button move when the visitor clicks it:
-- First add the button to the page by following the steps in the TODO 🚧
-*/
-const btn = document.querySelector("button"); // Get the button from the page
-if (btn) { // Detect clicks on the button
-  btn.onclick = function () {
-    // The 'dipped' class in style.css changes the appearance on click
-    btn.classList.toggle("dipped");
-  };
+
+
+console.log(button);
+
+button.addEventListener('click', play);
+
+function play() {
+
+    const userNumber = document.querySelector("#guess").value;
+    if (userNumber < 1 || userNumber > 20) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Enter a number between 1 and 20!',
+          })
+    }
+
+    else if (isNaN(userNumber)){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Enter a number!',
+          })
+    }
+
+    else {
+        if (userNumber > answer){
+            Swal.fire({
+                title: 'Oops, this number is too high, go lower!',
+              })
+        }
+
+        else if (userNumber < answer){
+            Swal.fire({
+                title: 'Oops, this number is too low, go higher!',
+              })
+        }
+
+        else {
+            Swal.fire({
+                title: 'Sweet! You won!',
+                text: 'Good job! You guessed it!',
+                imageUrl: 'https://images.unsplash.com/photo-1527269534026-c86f4009eace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1925&q=80',
+                imageWidth: 600,
+                imageHeight: 400,
+                imageAlt: 'Victory',
+              })
+        }
+    }
 }
-
-
-// ----- GLITCH STARTER PROJECT HELPER CODE -----
-
-// Open file when the link in the preview is clicked
-let goto = (file, line) => {
-  window.parent.postMessage(
-    { type: "glitch/go-to-line", payload: { filePath: file, line: line } }, "*"
-  );
-};
-// Get the file opening button from its class name
-const filer = document.querySelectorAll(".fileopener");
-filer.forEach((f) => {
-  f.onclick = () => { goto(f.dataset.file, f.dataset.line); };
-});
